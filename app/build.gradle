@@ -9,15 +9,16 @@
 plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
     id 'application'
+    id 'java'
+    id 'eclipse'
 }
 
 eclipse{
 
     project{
-    
-    name = "myselfproject"
-    
-    
+        
+       name = "myselfproject"
+   
     }
 }
 
