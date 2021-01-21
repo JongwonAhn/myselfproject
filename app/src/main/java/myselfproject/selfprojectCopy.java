@@ -3,7 +3,7 @@ package myselfproject;
 import java.sql.Date;
 import java.util.Scanner;
 
-public class selfproject01 {
+public class selfprojectCopy {
   public static void main(String[] args) {
     Scanner keyScan = new Scanner(System.in);
 
@@ -54,12 +54,15 @@ public class selfproject01 {
 
           if (input0 == 1) {
 
+
             System.out.println("등록한 차량번호를 입력해 주세요");
             System.out.println("등록된 차량 리스트");
 
             for(int i=0; i<carNumber.length; i++ ) {
-              System.out.println(carNumber[i]);
 
+              if(carNumber[i] != 0) { // 등록된 차량만 나오게.
+                System.out.println(carNumber[i]);
+              }
             }
 
 
