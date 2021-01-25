@@ -29,7 +29,8 @@ public class selfprojectCopy {
       if(input == 1) { //1. 차량등록기능
         System.out.println("차량번호를 입력하세요.");
         keyScan.nextLine();
-        carNumber[count] = Integer.parseInt(keyScan.nextLine());
+        carNumber[count] = keyScan.nextInt();
+        keyScan.nextLine();
         //carNumber[0] =  입력한 값 을 저장 
         System.out.println("차종을 입력하세요");
         carkind[count] = keyScan.nextLine();
@@ -71,7 +72,7 @@ public class selfprojectCopy {
 
             for(int i=0; i<carNumber.length; i++ ) { //carNumber배열안의 값을 조회하기 위해서 사용.
 
-              if(input1 == carNumber[i]) { //2. 에서 while문을 한번더넣어서 기능추가. 
+              if(input1 == (carNumber[i])) { //2. 에서 while문을 한번더넣어서 기능추가. 
 
                 while(true) {
                   System.out.println("1.등록정보보기 2. 등록삭제 3. 뒤로가기");

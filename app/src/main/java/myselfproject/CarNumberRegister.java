@@ -14,7 +14,7 @@ public class CarNumberRegister {
     System.out.println("소유주 이름을 입력하세요");
     mypj.onerName[mypj.count] = mypj.keyScan.nextLine();
 
-    System.out.println("차량 등록시간을 입력해주세요 20xx-yy-zz로");
+    System.out.println("등록 날짜를 을 입력해주세요 (20xx-yy-zz)");
     mypj.registerDate[mypj.count] = Date.valueOf(mypj.keyScan.nextLine());
 
     mypj.count++;
