@@ -3,19 +3,22 @@ package myselfproject;
 import java.sql.Date;
 import java.util.Scanner;
 
-public class selfprojectCopy {
+public class selfproject02 {
   public static void main(String[] args) {
     Scanner keyScan = new Scanner(System.in);
 
     final int MAX = 3;
 
-    int carNumber[] = new int[MAX];
+    String carNumber[] = new String[MAX];
     String carkind[] = new String[MAX];
     String onerName[] = new String[MAX];
     Date registerDate[] = new Date[MAX]; 
+    long startTime[] = new long[MAX];
+    long endTime[] = new long[MAX];
     int count = 0; //카운트는 while문이 돌때마다 초기화되면 안되므로 이곳에.
 
     System.out.println("[주차 관리 프로그램]");
+
 
 
     while(true) {
@@ -28,8 +31,8 @@ public class selfprojectCopy {
       if(input == 1) { //1. 차량등록기능
         System.out.println("차량번호를 입력하세요.");
         keyScan.nextLine();
-        carNumber[count] = keyScan.nextInt();
-        keyScan.nextLine();
+
+        carNumber[count] = keyScan.nextLine();
         //carNumber[0] =  입력한 값 을 저장 
         System.out.println("차종을 입력하세요");
         carkind[count] = keyScan.nextLine();
@@ -39,6 +42,7 @@ public class selfprojectCopy {
 
         System.out.println("차량 등록시간을 입력해주세요 20xx-yy-zz로");
         registerDate[count] = Date.valueOf(keyScan.nextLine());
+        startTime[count] = System.currentTimeMillis();
 
 
         count++;
@@ -59,22 +63,21 @@ public class selfprojectCopy {
             System.out.println("등록된 차량 리스트");
 
             for(int i=0; i<carNumber.length; i++ ) {
-
-              if(carNumber[i] != 0) { // 등록된 차량만 나오게.
+              if(carNumber[i] != null) { // 등록된 차량만 나오게.
                 System.out.println(carNumber[i]);
               }
             }
 
-
-            int input1 = keyScan.nextInt();
+            keyScan.nextLine();
+            String input1 = keyScan.nextLine();
             //carNumber[2];
 
             for(int i=0; i<carNumber.length; i++ ) { //carNumber배열안의 값을 조회하기 위해서 사용.
 
-              if(input1 == (carNumber[i])) { //2. 에서 while문을 한번더넣어서 기능추가. 
+              if(input1.equals(carNumber[i])) { //2. 에서 while문을 한번더넣어서 기능추가. 
 
                 while(true) {
-                  System.out.println("1.등록정보보기 2. 등록삭제 3. 뒤로가기");
+                  System.out.println("1.등록정보보기 2. 등록삭제 3.주차요금보기 4. 뒤로가기");
                   int input2 = keyScan.nextInt();
 
                   if(input2 == 1) { // 등록정보 조회기능. 해당차량번호를 불러와양함. 
@@ -89,7 +92,16 @@ public class selfprojectCopy {
                   }else if(input2 == 2) { // 등록삭제. 구현x
                     System.out.println("아직 삭제못함");
 
-                  }else if(input2 == 3) { //뒤로가기
+                  }else if(input2 == 3) {
+
+                    endTime[i] = System.currentTimeMillis();
+                    int totalTime = (int)((endTime[i] - startTime[i] ) / 1000.0);
+                    int check;
+                    check = 10000 * totalTime;
+                    System.out.println ("경과시간"+totalTime+"시간입니다. 금액은"+check+"원 입니다" );
+
+
+                  }else if(input2 == 4) { //뒤로가기
                     break;
 
                   }else {

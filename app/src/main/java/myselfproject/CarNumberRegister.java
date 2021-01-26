@@ -3,6 +3,11 @@ package myselfproject;
 import java.sql.Date;
 
 public class CarNumberRegister {
+
+  public CarNumberRegister() {
+
+  }
+
   static void registerCarNumber() {
 
     String CarNum=ScannerInput.StringInput("차량번호를 입력하세요.");

@@ -23,6 +23,21 @@ public class CarNumberList {
   }
 
   /*------------------------------------------------------------------------------------*/
+  /*------------------------------------------------------------------------------------*/
+  //CarListRun
+  static void ListRun(int input) {
+    for(int i=0; i<mypj.carNumber.length; i++ ) { //carNumber배열안의 값을 조회하기 위해서 사용.
+
+      if(input == mypj.carNumber[i]) { //2. 에서 while문을 한번더넣어서 기능추가. 
+
+        module2(i);
+      }
+    }
+
+  }
+  /*-----------------------------------------------------------------------------------*/
+
+
 
   /*------------------------------------------------------------------------------------*/
   //모듈 로직
@@ -34,36 +49,8 @@ public class CarNumberList {
 
       int input1 = ScannerInput.IntInput(carListInfo());
       //carNumber[2];
+      ListRun(input1);
 
-      for(int i=0; i<mypj.carNumber.length; i++ ) { //carNumber배열안의 값을 조회하기 위해서 사용.
-
-        if(input1 == mypj.carNumber[i]) { //2. 에서 while문을 한번더넣어서 기능추가. 
-
-          while(true) {
-            System.out.println("1.등록정보보기 2. 등록삭제 3. 뒤로가기");
-            int input2 = mypj.keyScan.nextInt();
-
-            if(input2 == 1) { // 등록정보 조회기능. 해당차량번호를 불러와양함. 
-
-              System.out.println("해당차량 정보");
-              System.out.println("차량 번호 : "+ mypj.carNumber[i]);
-              System.out.println("  차종    : "+mypj.carkind[i]);
-              System.out.println("소유주 이름 :"+mypj.onerName[i]);
-              System.out.println("등록 날짜 :"+mypj.registerDate[i]);
-
-
-            }else if(input2 == 2) { // 등록삭제. 구현x
-              System.out.println("아직 삭제못함");
-
-            }else if(input2 == 3) { //뒤로가기
-              break;
-
-            }else {
-              System.out.println("잘못입력했습니다 1");
-            }
-          }
-        }
-      }   
     }else if(check == 2){
       return false;
     }else {
@@ -72,6 +59,32 @@ public class CarNumberList {
     }
     return true;
   }
+
+
+  static void module2(int select) {
+    while(true) {
+      System.out.println("1.등록정보보기 2. 등록삭제 3. 뒤로가기");
+      int input2 = mypj.keyScan.nextInt();
+
+      if(input2 == 1) { // 등록정보 조회기능. 해당차량번호를 불러와양함. 
+
+        getCar(select);
+
+      }else if(input2 == 2) { // 등록삭제. 구현x
+        System.out.println("아직 삭제못함");
+
+      }else if(input2 == 3) { //뒤로가기
+        break;
+
+      }else {
+        System.out.println("잘못입력했습니다 1");
+      }
+    }
+  }
+  /*------------------------------------------------------------------------------------*/
+
+
+
 
   static void listCarNumber() {
 
@@ -100,4 +113,13 @@ public class CarNumberList {
     return carList;
   }
 
+  static void getCar(int select) {
+    System.out.println("해당차량 정보");
+    System.out.println("차량 번호 : "+ mypj.carNumber[select]);
+    System.out.println("  차종    : "+mypj.carkind[select]);
+    System.out.println("소유주 이름 :"+mypj.onerName[select]);
+    System.out.println("등록 날짜 :"+mypj.registerDate[select]);
+
+  }
+  /*-------------------------------------------------------------------------------------*/
 }
