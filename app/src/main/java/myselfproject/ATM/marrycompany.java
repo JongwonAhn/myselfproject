@@ -23,7 +23,7 @@ public class marrycompany {
 
     mc2.myInfo();
 
-    mc2.setWeight(55);
+    mc2.setWeight(60);
 
     mc2.myInfo();
 

@@ -7,11 +7,11 @@ public class selfproject02 {
   public static void main(String[] args) {
     Scanner keyScan = new Scanner(System.in);
 
-    final int MAX = 3;
+    final int MAX = 10;
 
     String carNumber[] = new String[MAX];
     String carkind[] = new String[MAX];
-    String onerName[] = new String[MAX];
+    String address[] = new String[MAX];
     Date registerDate[] = new Date[MAX]; 
     long startTime[] = new long[MAX];
     long endTime[] = new long[MAX];
@@ -23,7 +23,7 @@ public class selfproject02 {
 
     while(true) {
 
-      System.out.println("1. 차량 등록(숫자만가능)  2. 차량 조회 3. 남은 등록가능횟수 조회 4. 프로그램 종료");
+      System.out.println("1. 차량 등록  2. 차량 조회 3. 남은 등록가능횟수 조회 4. 프로그램 종료");
       // 이 메세지도 반복되야되기떄문에 while안으로
 
       int input = keyScan.nextInt();
@@ -37,8 +37,8 @@ public class selfproject02 {
         System.out.println("차종을 입력하세요");
         carkind[count] = keyScan.nextLine();
 
-        System.out.println("소유주 이름을 입력하세요");
-        onerName[count] = keyScan.nextLine();
+        System.out.println("동, 호수를 입력하세요");
+        address[count] = keyScan.nextLine();
 
         System.out.println("차량 등록시간을 입력해주세요 20xx-yy-zz로");
         registerDate[count] = Date.valueOf(keyScan.nextLine());
@@ -85,7 +85,7 @@ public class selfproject02 {
                     System.out.println("해당차량 정보");
                     System.out.println("차량 번호 : "+ carNumber[i]);
                     System.out.println("  차종    : "+carkind[i]);
-                    System.out.println("소유주 이름 :"+onerName[i]);
+                    System.out.println("  호수    : "+address[i]);
                     System.out.println("등록 날짜 :"+registerDate[i]);
 
 
