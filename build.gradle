@@ -17,7 +17,7 @@ eclipse{
 
     project{
         
-       name = "mynote"
+       name = "myselfproject"
    
     }
 }

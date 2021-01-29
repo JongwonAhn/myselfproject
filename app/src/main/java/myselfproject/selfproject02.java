@@ -92,6 +92,19 @@ public class selfproject02 {
                   }else if(input2 == 2) { // 등록삭제. 구현x
                     System.out.println("아직 삭제못함");
 
+                    System.out.println("삭제할 차량번호를 선택해주세요");
+                    keyScan.nextLine();
+                    String deleteCar = keyScan.nextLine();
+
+                    int k = 1;
+                    for (int j = 0 + k; j < carNumber[j].length(); j++) {
+                      if(deleteCar.equalsIgnoreCase(carNumber[j])) {
+                        carNumber[j - 1] = carNumber[j];
+                      }
+
+                      carNumber[--j] = null; 
+                    }
+
                   }else if(input2 == 3) {
 
                     endTime[i] = System.currentTimeMillis();
