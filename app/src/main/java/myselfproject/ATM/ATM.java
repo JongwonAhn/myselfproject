@@ -28,7 +28,7 @@ public class ATM {
 
 
         }else if (deposit < 100000) {
-          System.out.println("거지냐?");
+          System.out.println("고작??");
 
           ATM += deposit;
 
