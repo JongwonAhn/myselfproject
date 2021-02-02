@@ -1,4 +1,4 @@
-package util;
+package com.eomcs.util;
 
 import java.sql.Date;
 import java.util.Scanner;
@@ -14,6 +14,7 @@ public class Prompt {
 
   public static int inputInt(String title) {
     return Integer.parseInt(inputString(title));
+
   }
 
   public static Date inputDate(String title) {
@@ -23,4 +24,5 @@ public class Prompt {
   public static void close() {
     keyboardScan.close();
   }
+
 }
