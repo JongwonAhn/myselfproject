@@ -29,7 +29,7 @@ public class App01 {
 
         } else {
 
-          System.out.println("메인 / 로그인---------------------------------\n");
+          System.out.println("메인 / 로그인---------------------------------");
           String inputId = pt.inputString("아이디: ");
 
           if (accountHandler.chkAcccountId(inputId)) {
@@ -40,7 +40,7 @@ public class App01 {
 
               while (select) {
 
-                System.out.println("메인 / 메뉴선택-------------------------------");
+                System.out.println("메인 / 메뉴선택-----------------------------");
                 if(accountHandler.myaccount.getAdmin()==0) {
                   System.out.println("1. 내 계정관리\n2. 게시판 가기\n3. 아파트 공지 보기\n4. 뒤로가기");
                 }
@@ -54,16 +54,17 @@ public class App01 {
 
                   select=accountHandler.Menu(select);
 
-                } else if (inputMenu2 == 2) {
+                } else if (inputMenu2 == 2) { // 게시판
 
-                } else if (inputMenu2 == 3) {
 
-                } else if (inputMenu2 == 4) {
+
+                } else if (inputMenu2 == 3) { // 공지보기
+
+                } else if (inputMenu2 == 4) { // 뒤로가기
                   break;
 
-                } else if (inputMenu2 == 5) {
+                } else if (inputMenu2 == 5) { //공지 하기(관리자메뉴)
 
-                  break;
                 } else {
                   System.out.println("잘못 입력했습니다\n");
                 }

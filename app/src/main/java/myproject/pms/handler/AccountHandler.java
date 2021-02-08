@@ -81,7 +81,7 @@ public class AccountHandler {
   }
 
   public void detail( ) {
-    System.out.println("가입 정보\n");
+    System.out.println("메인 / 내 계정관리 / 가입정보----------------");
 
     System.out.printf("가입 id :  %s\n", myaccount.getId());
     System.out.printf("비밀번호 : %s\n", myaccount.getPassword());
@@ -91,7 +91,7 @@ public class AccountHandler {
   }
 
   public void update() {
-    System.out.println("가입 정보 변경\n");
+    System.out.println("메인 / 내 계정관리 / 가입정보 변경---------------");
 
     String id = prompt.inputString(String.format
         ("변경할 id(%s)?", myaccount.getId()));
@@ -117,7 +117,7 @@ public class AccountHandler {
   }
 
   public boolean delete(boolean select) {
-    System.out.println("회원 탈퇴\n");
+    System.out.println("메인 / 내 계정관리 / 회원탈퇴---------------");
 
     if(myaccount.getAdmin() == 0) {
 
@@ -128,6 +128,7 @@ public class AccountHandler {
         for(int i=0; i<account.length; i++) {
           if(myaccount==account[i]) {
             account[i]=null;
+            System.out.println("탈퇴 되었습니다! \n");
             return false;
           }
         }
