@@ -57,8 +57,9 @@ public class App01 {
                 } else if (inputMenu2 == 2) { // 게시판
 
 
-
                 } else if (inputMenu2 == 3) { // 공지보기
+
+
 
                 } else if (inputMenu2 == 4) { // 뒤로가기
                   break;

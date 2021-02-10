@@ -1,25 +1,29 @@
 package com.eomcs.pms.handler;
 
-import com.eomcs.pms.domain.Project;
+import java.sql.Date;
+
 import com.eomcs.util.Prompt;
 
 public class ProjectHandler {
 
-
-  public MemberHandler memberList;
-
-  static final int LENGTH = 100;
-  Project[] projects = new Project[LENGTH];
-  int size = 0;
-
-  public ProjectHandler(MemberHandler memberHandler) {
-    this.memberList = memberHandler;
+  static class Project {
+    int no;
+    String title;
+    String content;
+    Date startDate;
+    Date endDate;
+    String owner;
+    String members;  
   }
 
-  public  void add() {
+  static final int LENGTH = 100;
+  static Project[] projects = new Project[LENGTH];
+  static int size = 0;
+
+  public static void add() {
+    System.out.println("[프로젝트 등록]");
 
     Project p = new Project();
-
     p.no = Prompt.inputInt("번호? ");
     p.title = Prompt.inputString("프로젝트명? ");
     p.content = Prompt.inputString("내용? ");
@@ -27,43 +31,37 @@ public class ProjectHandler {
     p.endDate = Prompt.inputDate("종료일? ");
 
     while(true) {
-      String name = Prompt.inputString("만든이?(취소: 빈 문자열) ");
-      if (name.length() == 0) {
-        System.out.println("프로젝트 등록을 취소합니다.");
-        return;
-      }
-      if(memberList.exist(name)) {
+      String name = Prompt.inputString("만든이?(취소: 빈문자열)");
+      if(MemberHandler.exist(name)) {
         p.owner = name;
         break;
       }
       System.out.println("등록된 회원이 아닙니다.");
     }
 
-    p.members = "";
+
     while(true) {
-      String name = Prompt.inputString("팀원? (완료: 빈 문자열) ");
-      if(name.length() == 0) {
+      String member = Prompt.inputString("팀원?(취소: 빈문자열)");
+      if(MemberHandler.exist(member)) {
+        p.members = member;
+      }else if(member.equals("")){
         break;
-      }else if(memberList.exist(name)) {
-        if (!p.members.isEmpty()) {
-          p.members +=",";
-        }
-        p.members += name;
       }else {
-        System.out.println("등록된 회원이 아닙니다.");
+        System.out.println("등록된 회원이아닙니다.");
       }
+
     }
 
     projects[size++] = p;
-
   }
 
-  public  void list() {
+  public static void list() {
+    System.out.println("[프로젝트 목록]");
+
     for (int i = 0; i < size; i++) {
       Project p = projects[i];
-      // 번호, 프로젝트명, 시작일, 종료일, 만든이
-      System.out.printf("%d, %s, %s, %s, %s, [%s]\n", // 출력 형식 지정
-          p.no, p.title, p.content, p.startDate, p.endDate, p.owner, p.members);
+      System.out.printf("%d, %s, %s, %s, %s\n",
+          p.no, p.title, p.startDate, p.endDate, p.owner);
     }
   }
 
