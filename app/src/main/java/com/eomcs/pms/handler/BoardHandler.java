@@ -102,7 +102,11 @@ public class BoardHandler {
     String input = Prompt.inputString("정말 삭제하시겠습니까?");
 
     if(input.equalsIgnoreCase("y")) {
-      this.boards[i] = null;
+      for (int x = i + 1; x < this.size; x++) {
+        this.boards[x-1] = this.boards[x];
+      }
+      boards[--this.size] = null;
+
       System.out.println("해당 게시글을 삭제하였습니다.");
     }else {
       System.out.println("게시글 삭제를 취소하였습니다.");
