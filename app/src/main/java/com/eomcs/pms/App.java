@@ -6,54 +6,79 @@ import com.eomcs.pms.handler.ProjectHandler;
 import com.eomcs.pms.handler.TaskHandler;
 import com.eomcs.util.Prompt;
 
-// 1) Prompt 클래스를 별도의 패키지로 분류한다
-//    - com.eomcs.util 패키지 생성
-//    - Prompt 클래스를 이 패키지로 옮긴다.
-//    - Prompt 클래스를 다른 패키지의 클래스가 사용할 수 있도록 public 으로 공개한다.
-//    - Prompt의 메서드를 다른 패키지의 클래스가 사용할 수 있도록 public 으로 공개한다.
-// 2) 핸들러 클래스들을 별도의 패키지로 분류한다
-//    - com.eomcs.pms.handler 패키지 생성
-//    - XxxHandler 클래스를 이 패키지로 옮긴다.
-//    - 핸들러 클래스를 다른 패키지의 클래스가 사용할 수 있도록 public 으로 공개한다.
-//    - 핸들러의 메서드를 다른 패키지의 클래스가 사용할 수 있도록 public 으로 공개한다.
 public class App {
 
   public static void main(String[] args) {
 
-    BoardHandler boardList = new BoardHandler();
-    MemberHandler memberList = new MemberHandler();
-    ProjectHandler projectList = new ProjectHandler(memberList);
-    TaskHandler taskList = new TaskHandler(memberList);
-
+    BoardHandler boardHandler = new BoardHandler();
+    MemberHandler memberHandler = new MemberHandler();
+    ProjectHandler projectHandler = new ProjectHandler(memberHandler);
+    TaskHandler taskHandler = new TaskHandler(memberHandler);
 
     loop:
       while (true) {
         String command = com.eomcs.util.Prompt.inputString("명령> ");
 
         switch (command) {
-        case "/board/add":
-          boardList.add();
-          break;
-        case "/board/list":
-          boardList.list();
-          break;
         case "/member/add":
-          memberList.add();
+          memberHandler.add();
           break;
         case "/member/list":
-          memberList.list();
+          memberHandler.list();
+          break;
+        case "/member/detail":
+          memberHandler.detail();
+          break;  
+        case "/member/update":
+          memberHandler.update();
+          break; 
+        case "/member/delete":
+          memberHandler.delete();
           break;
         case "/project/add":
-          projectList.add();
+          projectHandler.add();
           break;
         case "/project/list":
-          projectList.list();
+          projectHandler.list();
+          break;
+        case "/project/detail": 
+          projectHandler.detail();
+          break;  
+        case "/project/update":
+          projectHandler.update();
+          break; 
+        case "/project/delete":
+          projectHandler.delete();
           break;
         case "/task/add":
-          taskList.add();
+          taskHandler.add();
           break;
         case "/task/list":
-          taskList.list();
+          taskHandler.list();
+          break;
+        case "/task/detail": 
+          taskHandler.detail();
+          break;  
+        case "/task/update":
+          taskHandler.update();
+          break; 
+        case "/task/delete":
+          taskHandler.delete();
+          break;
+        case "/board/add":
+          boardHandler.add();
+          break;
+        case "/board/list":
+          boardHandler.list();
+          break;
+        case "/board/detail":
+          boardHandler.detail();
+          break;  
+        case "/board/update":
+          boardHandler.update();
+          break; 
+        case "/board/delete":
+          boardHandler.delete();
           break;
         case "quit":
         case "exit":
