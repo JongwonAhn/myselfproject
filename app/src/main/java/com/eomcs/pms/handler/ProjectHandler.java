@@ -1,8 +1,8 @@
 package com.eomcs.pms.handler;
 
 import java.sql.Date;
-
 import com.eomcs.pms.domain.Project;
+import com.eomcs.util.Iterator;
 import com.eomcs.util.List;
 import com.eomcs.util.Prompt;
 
@@ -39,12 +39,13 @@ public class ProjectHandler {
     System.out.println("프로젝트를 등록했습니다.");
   }
 
-  public void list() {
+  public void list() throws CloneNotSupportedException {
     System.out.println("[프로젝트 목록]");
 
-    Object[] list = projectList.toArray();
-    for (Object obj : list) {
-      Project p = (Project) obj;
+    Iterator iterator = projectList.iterator();
+
+    while (iterator.hasNext()) {
+      Project p = (Project) iterator.next();
       System.out.printf("%d, %s, %s, %s, %s, [%s]\n",
           p.getNo(), p.getTitle(), p.getStartDate(), p.getEndDate(), p.getOwner(), p.getMembers());
     }
@@ -117,8 +118,8 @@ public class ProjectHandler {
 
     int no = Prompt.inputInt("번호? ");
 
-    int index = indexOf(no);
-    if (index == -1) {
+    Project project = findByNo(no);
+    if (project == null) {
       System.out.println("해당 번호의 프로젝트가 없습니다.");
       return;
     }
@@ -126,24 +127,13 @@ public class ProjectHandler {
     String input = Prompt.inputString("정말 삭제하시겠습니까?(y/N) ");
 
     if (input.equalsIgnoreCase("Y")) {
-      projectList.delete(index);
+      projectList.delete(project);
       System.out.println("프로젝트을 삭제하였습니다.");
 
     } else {
       System.out.println("프로젝트 삭제를 취소하였습니다.");
     }
 
-  }
-
-  private int indexOf(int projectNo) {
-    Object[] list = projectList.toArray();
-    for (int i = 0; i < list.length; i++) {
-      Project p = (Project) list[i];
-      if (p.getNo() == projectNo) {
-        return i;
-      }
-    }
-    return -1;
   }
 
   private Project findByNo(int projectNo) {

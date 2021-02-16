@@ -1,8 +1,8 @@
 package com.eomcs.pms.handler;
 
 import java.sql.Date;
-
 import com.eomcs.pms.domain.Task;
+import com.eomcs.util.Iterator;
 import com.eomcs.util.List;
 import com.eomcs.util.Prompt;
 
@@ -35,12 +35,13 @@ public class TaskHandler {
     System.out.println("작업을 등록했습니다.");
   }
 
-  public void list() {
+  public void list() throws CloneNotSupportedException {
     System.out.println("[작업 목록]");
 
-    Object[] list = taskList.toArray();
-    for (Object obj : list) {
-      Task t = (Task) obj;
+    Iterator iterator = taskList.iterator();
+
+    while (iterator.hasNext()) {
+      Task t = (Task) iterator.next();
       System.out.printf("%d, %s, %s, %s, %s\n", 
           t.getNo(), t.getContent(), t.getDeadline(), getStatusLabel(t.getStatus()), t.getOwner());
     }
@@ -106,8 +107,8 @@ public class TaskHandler {
 
     int no = Prompt.inputInt("번호? ");
 
-    int index = indexOf(no);
-    if (index == -1) {
+    Task task = findByNo(no);
+    if (task == null) {
       System.out.println("해당 번호의 작업이 없습니다.");
       return;
     }
@@ -115,7 +116,7 @@ public class TaskHandler {
     String input = Prompt.inputString("정말 삭제하시겠습니까?(y/N) ");
 
     if (input.equalsIgnoreCase("Y")) {
-      taskList.delete(index);
+      taskList.delete(task);
       System.out.println("작업을 삭제하였습니다.");
 
     } else {
@@ -126,24 +127,13 @@ public class TaskHandler {
 
   private String getStatusLabel(int status) {
     switch (status) {
-    case 1:
-      return "진행중";
-    case 2:
-      return "완료";
-    default:
-      return "신규";
+      case 1:
+        return "진행중";
+      case 2:
+        return "완료";
+      default:
+        return "신규";
     }
-  }
-
-  private int indexOf(int taskNo) {
-    Object[] list = taskList.toArray();
-    for (int i = 0; i < list.length; i++) {
-      Task t = (Task) list[i];
-      if (t.getNo() == taskNo) {
-        return i;
-      }
-    }
-    return -1;
   }
 
   private Task findByNo(int taskNo) {

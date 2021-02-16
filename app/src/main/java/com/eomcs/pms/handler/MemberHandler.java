@@ -1,6 +1,7 @@
 package com.eomcs.pms.handler;
 
 import com.eomcs.pms.domain.Member;
+import com.eomcs.util.Iterator;
 import com.eomcs.util.List;
 import com.eomcs.util.Prompt;
 
@@ -30,12 +31,13 @@ public class MemberHandler {
     System.out.println("회원을 등록하였습니다.");
   }
 
-  public void list() {
+  public void list() throws CloneNotSupportedException {
     System.out.println("[회원 목록]");
 
-    Object[] list = memberList.toArray();
-    for (Object obj : list) {
-      Member m = (Member) obj;
+    Iterator iterator = memberList.iterator();
+
+    while (iterator.hasNext()) {
+      Member m = (Member) iterator.next();
       // 번호, 이름, 이메일, 전화, 가입일
       System.out.printf("%d, %s, %s, %s, %s\n", // 출력 형식 지정
           m.getNo(), m.getName(), m.getEmail(), m.getTel(), m.getRegisteredDate());
@@ -96,8 +98,8 @@ public class MemberHandler {
 
     int no = Prompt.inputInt("번호? ");
 
-    int index = indexOf(no);
-    if (index == -1) {
+    Member member = findByNo(no);
+    if (member == null) {
       System.out.println("해당 번호의 회원이 없습니다.");
       return;
     }
@@ -105,7 +107,7 @@ public class MemberHandler {
     String input = Prompt.inputString("정말 삭제하시겠습니까?(y/N) ");
 
     if (input.equalsIgnoreCase("Y")) {
-      memberList.delete(index);
+      memberList.delete(member);
       System.out.println("회원을 삭제하였습니다.");
 
     } else {
@@ -140,17 +142,6 @@ public class MemberHandler {
         members += name;
       }
     }
-  }
-
-  private int indexOf(int memberNo) {
-    Object[] list = memberList.toArray();
-    for (int i = 0; i < list.length; i++) {
-      Member m = (Member) list[i];
-      if (m.getNo() == memberNo) {
-        return i;
-      }
-    }
-    return -1;
   }
 
   private Member findByNo(int boardNo) {

@@ -3,13 +3,13 @@ package com.eomcs.pms.handler;
 import java.sql.Date;
 
 import com.eomcs.pms.domain.Board;
+import com.eomcs.util.Iterator;
 import com.eomcs.util.List;
 import com.eomcs.util.Prompt;
 
 public class BoardHandler {
 
-  private List boardList = new List();
-
+  private List<Board> boardList = new List<>();
 
   public void add() {
     System.out.println("[게시글 등록]");
@@ -27,13 +27,13 @@ public class BoardHandler {
     System.out.println("게시글을 등록하였습니다.");
   }
 
-  public void list() {
+  public void list() throws CloneNotSupportedException {
     System.out.println("[게시글 목록]");
 
-    Object[] list = boardList.toArray();
+    Iterator<Board> iterator = boardList.iterator();
 
-    for (Object obj : list) {
-      Board b = (Board) obj;
+    while (iterator.hasNext()) {
+      Board b = iterator.next();
       // 번호, 제목, 등록일, 작성자, 조회수, 좋아요
       System.out.printf("%d, %s, %s, %s, %d, %d\n", 
           b.getNo(), 
@@ -97,8 +97,8 @@ public class BoardHandler {
 
     int no = Prompt.inputInt("번호? ");
 
-    int index = indexOf(no);
-    if (index == -1) {
+    Board board = findByNo(no);
+    if (board == null) {
       System.out.println("해당 번호의 게시글이 없습니다.");
       return;
     }
@@ -106,7 +106,7 @@ public class BoardHandler {
     String input = Prompt.inputString("정말 삭제하시겠습니까?(y/N) ");
 
     if (input.equalsIgnoreCase("Y")) {
-      boardList.delete(no);
+      boardList.delete(board); // 오버로딩한 메서드를 사용하여 삭제한다.
 
       System.out.println("게시글을 삭제하였습니다.");
 
@@ -114,23 +114,10 @@ public class BoardHandler {
       System.out.println("게시글 삭제를 취소하였습니다.");
     }
 
-
-
-  }
-
-  private int indexOf(int boardNo) {
-    Object[] list = boardList.toArray();
-    for (int i = 0; i < list.length; i++) {
-      Board b = (Board) list[i];
-      if (b.getNo() == boardNo) {
-        return i;
-      }
-    }
-    return -1;
   }
 
   private Board findByNo(int boardNo) {
-    Object[] list = boardList.toArray();
+    Board[] list = boardList.toArray(new Board[0]);
     for (Object obj : list) {
       Board b = (Board) obj;
       if (b.getNo() == boardNo) {
