@@ -60,20 +60,20 @@ public class AccountHandler {
   //회원가입 
   public void add() {
 
-    Account a = new Account();
+    Account account = new Account();
 
     System.out.println("메인 / 회원가입-------------------------------");
 
-    a.setId(prompt.inputString("아이디: "));
-    if (duplicatedId(a)) {
+    account.setId(prompt.inputString("아이디: "));
+    if (duplicatedId(account)) {
 
 
-      a.setPassword(prompt.inputString("비밀번호: "));
-      a.setName(prompt.inputString("이름: "));
-      a.setFlatNo(prompt.inputString("동, 호수: "));
-      a.setRegisteredDate(new java.sql.Date(System.currentTimeMillis()));
-      a.setAdmin(0);      
-      this.account[size++] = a;
+      account.setPassword(prompt.inputString("비밀번호: "));
+      account.setName(prompt.inputString("이름: "));
+      account.setFlatNo(prompt.inputString("동, 호수: "));
+      account.setRegisteredDate(new java.sql.Date(System.currentTimeMillis()));
+      account.setAdmin(0);      
+      this.account[size++] = account;
       System.out.println("회원가입이 완료되었습니다.\n");
 
     }

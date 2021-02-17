@@ -12,6 +12,35 @@ public class NoticeHandler {
   public int size = 0;
 
 
+  public void writeNotice() {
+
+    System.out.println("메인 / 공지하기 -----------------------\n");
+
+    Notice notice = new Notice();
+    notice.setNo(prompt.inputInt("공지 번호 입력"));
+    notice.setTitle(prompt.inputString("공지 제목 입력"));
+    notice.setContents(prompt.inputString("공지 내용 입력"));
+    notice.setDate(new java.sql.Date(System.currentTimeMillis()));
+
+    this.notice[size++] = notice;
+
+    System.out.println("게시글 저장이 완료되었습니다.\n");
+
+  }
+
+  public void readNotice() {
+
+    System.out.println("메인 / 공지보기 -----------------------\n");
+
+    for(int i = 0; i < size; i ++) {
+      System.out.printf("%s %s %s %s\n",
+          notice[i].getNo(),
+          notice[i].getTitle(),
+          notice[i].getContents(),
+          notice[i].getDate());
+    }
+
+  }
 
 
 }

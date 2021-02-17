@@ -23,6 +23,20 @@ public class List<E> {
     size++;
   }
 
+  public Object[] toArray() {
+    Object[] arr = new Object[size];
+
+    Node<E> cursor = this.first;
+    int i = 0;
+
+    while (cursor != null) {
+      arr[i++] = cursor.obj;
+      cursor = cursor.next;
+    }
+    return arr;
+  }
+
+  @SuppressWarnings("unchecked")
   public E[] toArray(E[] arr) {
 
     if (arr.length < size) {

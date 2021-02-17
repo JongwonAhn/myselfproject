@@ -1,13 +1,17 @@
 package myproject.pms;
 
 import myproject.pms.handler.AccountHandler;
+import myproject.pms.handler.NoticeHandler;
 import myproject.util.Prompt;
 
 public class App01 {
 
   public static void main(String[] args) {
+
     Prompt pt=new Prompt();
     AccountHandler accountHandler = new AccountHandler();
+    NoticeHandler noticeHandler = new NoticeHandler();
+
     boolean select=true;
 
     System.out.println("[입주민 커뮤니티 프로그램]\n");
@@ -59,12 +63,15 @@ public class App01 {
 
                 } else if (inputMenu2 == 3) { // 공지보기
 
-
+                  noticeHandler.readNotice();
 
                 } else if (inputMenu2 == 4) { // 뒤로가기
                   break;
 
-                } else if (inputMenu2 == 5) { //공지 하기(관리자메뉴)
+                } else if (inputMenu2 == 5 && accountHandler.myaccount.getAdmin() == 1 ) { 
+                  //공지 하기(관리자만 실행가능
+
+                  noticeHandler.writeNotice();
 
                 } else {
                   System.out.println("잘못 입력했습니다\n");
