@@ -1,5 +1,6 @@
 package myproject.pms.handler;
 
+
 import myproject.pms.domain.Account;
 import myproject.util.Prompt;
 
@@ -14,12 +15,13 @@ public class AccountHandler {
   public Account myaccount = new Account();
 
 
+
   public AccountHandler() {
 
     Account a = new Account();
     a.setId("admin");
     a.setPassword("admin"); 
-    a.setName("안종원"); 
+    a.setName("관리자"); 
     a.setFlatNo("관리자"); 
     a.setRegisteredDate(new java.sql.Date(System.currentTimeMillis())); 
     a.setAdmin(1); 
@@ -32,25 +34,31 @@ public class AccountHandler {
 
     while(select) {
 
-      System.out.println("메인 / 내 계정관리-------------------------------");
-      System.out.println("1. 내 정보보기\n2. 정보수정\n3. 계정삭제\n4. 뒤로가기");
-      int inputMenu3 = prompt.inputInt("입력>");
+      try {
 
-      if(inputMenu3 == 1) { //계정 상세정보 보기. 이안에서 삭제, 수정 처리
-        detail();
+        System.out.println("메인 / 계정관리-------------------------------");
+        System.out.println("1. 계정정보 보기\n2. 정보 수정\n3. 계정 삭제\n4. 뒤로가기");
+        int inputMenu3 = prompt.inputInt("입력>");
 
-      }else if (inputMenu3 == 2) {// 수정
-        update();
+        if(inputMenu3 == 1) { //계정 상세정보 보기. 이안에서 삭제, 수정 처리
+          detail();
 
-      }else if (inputMenu3 == 3) {// 삭제
-        return delete(select);
+        }else if (inputMenu3 == 2) {// 수정
+          update();
 
-      }else if (inputMenu3 ==4){
-        System.out.println("뒤로가기\n");
-        break;
+        }else if (inputMenu3 == 3) {// 삭제
+          return delete(select);
 
-      }else {
-        System.out.println("잘못 입력했습니다. 다시입력해주세요\n");
+        }else if (inputMenu3 ==4){
+          System.out.println("뒤로가기\n");
+          break;
+
+        }else {
+          System.out.println("잘못 입력했습니다. 다시입력해주세요\n");
+        }
+
+      }catch(Exception e){
+        System.out.println("잘못 입력했습니다\n");
       }
 
     }
@@ -81,7 +89,7 @@ public class AccountHandler {
   }
 
   public void detail( ) {
-    System.out.println("메인 / 내 계정관리 / 가입정보----------------");
+    System.out.println("메인 / 계정관리 / 가입정보----------------");
 
     System.out.printf("가입 id :  %s\n", myaccount.getId());
     System.out.printf("비밀번호 : %s\n", myaccount.getPassword());

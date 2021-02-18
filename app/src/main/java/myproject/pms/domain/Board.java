@@ -9,7 +9,6 @@ public class Board {
   String content;
   String writer;
   Date registeredDate;
-  int viewCount;
 
   public int getNo() {
     return no;
@@ -40,12 +39,6 @@ public class Board {
   }
   public void setRegisteredDate(Date registeredDate) {
     this.registeredDate = registeredDate;
-  }
-  public int getViewCount() {
-    return viewCount;
-  }
-  public void setViewCount(int viewCount) {
-    this.viewCount = viewCount;
   }
 
 

@@ -7,7 +7,9 @@ public class Notice {
   int no;
   String title;
   String contents;
-  Date date;
+  Date registeredDate;
+  long deleteDate;
+  long currentDate;
 
   public int getNo() {
     return no;
@@ -27,12 +29,25 @@ public class Notice {
   public void setContents(String contents) {
     this.contents = contents;
   }
-  public Date getDate() {
-    return date;
+  public Date getRegisteredDate() {
+    return registeredDate;
   }
-  public void setDate(Date date) {
-    this.date = date;
+  public void setRegisteredDate(Date registeredDate) {
+    this.registeredDate = registeredDate;
   }
+  public long getDeleteDate() {
+    return deleteDate;
+  }
+  public void setDeleteDate(long deleteDate) {
+    this.deleteDate = deleteDate;
+  }
+  public long getCurrentDate() {
+    return currentDate;
+  }
+  public void setCurrentDate(long currentDate) {
+    this.currentDate = currentDate;
+  }
+
 
 
 }
