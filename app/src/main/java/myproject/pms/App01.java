@@ -63,11 +63,11 @@ public class App01 {
 
                     if (inputMenu2 == 1) { // 계정관리 내 메뉴
 
-                      select=accountHandler.Menu(select);
+                      select=accountHandler.menu(select);
 
                     } else if (inputMenu2 == 2) { // 게시판
 
-                      boardHander.BoardMain();
+                      boardHander.boardMain();
 
                     } else if (inputMenu2 == 3) { // 공지보기
 

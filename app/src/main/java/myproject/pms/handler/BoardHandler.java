@@ -14,7 +14,7 @@ public class BoardHandler {
   public Board[] board = new Board[SIZE];
   public int size = 0;
 
-  public void BoardMain() {
+  public void boardMain() {
 
     while(true) {
 

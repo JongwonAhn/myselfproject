@@ -26,6 +26,7 @@ public class NoticeHandler {
     notice.setContents(prompt.inputString("공지 내용 입력"));
     notice.setRegisteredDate(new java.sql.Date(System.currentTimeMillis()));
 
+
     this.notice[size++] = notice;
 
     System.out.println("게시글 저장이 완료되었습니다.\n");
@@ -43,6 +44,11 @@ public class NoticeHandler {
           notice[i].getContents(),
           notice[i].getRegisteredDate());
 
+
+      //      endTime[i] = System.currentTimeMillis();
+      //      int totalTime = (int)((endTime[i] - startTime[i] ) / 1000.0);
+      //      int check;
+      //      check = 10000 * totalTime;
     }
 
   }

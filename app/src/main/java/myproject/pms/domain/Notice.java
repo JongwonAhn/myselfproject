@@ -8,8 +8,6 @@ public class Notice {
   String title;
   String contents;
   Date registeredDate;
-  long deleteDate;
-  long currentDate;
 
   public int getNo() {
     return no;
@@ -34,18 +32,6 @@ public class Notice {
   }
   public void setRegisteredDate(Date registeredDate) {
     this.registeredDate = registeredDate;
-  }
-  public long getDeleteDate() {
-    return deleteDate;
-  }
-  public void setDeleteDate(long deleteDate) {
-    this.deleteDate = deleteDate;
-  }
-  public long getCurrentDate() {
-    return currentDate;
-  }
-  public void setCurrentDate(long currentDate) {
-    this.currentDate = currentDate;
   }
 
 

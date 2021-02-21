@@ -30,7 +30,7 @@ public class AccountHandler {
 
   }
 
-  public boolean Menu(boolean select){
+  public boolean menu(boolean select){
 
     while(select) {
 
