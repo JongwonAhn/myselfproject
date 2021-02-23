@@ -22,37 +22,6 @@ class Rectangle{
     }    
   }
 
-  public int getUlx() {
-    return ulx;
-  }
-
-  public void setUlx(int ulx) {
-    this.ulx = ulx;
-  }
-
-  public int getUly() {
-    return uly;
-  }
-
-  public void setUly(int uly) {
-    this.uly = uly;
-  }
-
-  public int getLrx() {
-    return lrx;
-  }
-
-  public void setLrx(int lrx) {
-    this.lrx = lrx;
-  }
-
-  public int getLry() {
-    return lry;
-  }
-
-  public void setLry(int lry) {
-    this.lry = lry;
-  }
 }
 
 
@@ -61,13 +30,14 @@ public class ex01 {
   public static void main(String[] args) {
 
     Rectangle rec = new Rectangle();
+
+    rec.check(22); rec.check(22);
+
     rec.ulx = 22; rec.uly = 22;
     rec.lrx = 10; rec.lry = 10;
     rec.showArea();
 
-    Rectangle rectagle = new Rectangle();
 
-    rectagle.getLrx()
   }
 
 
