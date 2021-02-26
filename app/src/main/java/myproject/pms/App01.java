@@ -20,7 +20,7 @@ public class App01 {
 
     while (true) { 
       select = true; 
-      System.out.println("메인 / ----------------------------------------");
+      System.out.println("메인 / -----------------------------------------");
       System.out.println("1. 회원가입\n2. 로그인\n3. 종료하기");
 
       try {
