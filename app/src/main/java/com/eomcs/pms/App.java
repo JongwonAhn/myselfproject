@@ -6,8 +6,6 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.sql.Date;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -45,6 +43,11 @@ import com.eomcs.pms.handler.TaskListHandler;
 import com.eomcs.pms.handler.TaskUpdateHandler;
 import com.eomcs.util.Prompt;
 
+//1) 게시글 데이터 로딩 및 저장 (메서드로 분리하기 전)
+//2) 게시글 데이터 로딩 및 저장 (메서드로 분리)
+//3) 회원 데이터 로딩 및 저장
+//4) 프로젝트 데이터 로딩 및 저장
+//5) 작업 데이터 로딩 및 저장
 public class App {
 
   // 사용자가 입력한 명령을 저장할 컬렉션 객체 준비
@@ -163,14 +166,21 @@ public class App {
     }
   }
 
-  @SuppressWarnings("unchecked")
   static void loadBoards() {
-    try (ObjectInputStream in = new ObjectInputStream(
-        new BufferedInputStream(
-            new FileInputStream("boards.data")))) {
+    try (DataInputStream in = new DataInputStream(new BufferedInputStream(new FileInputStream("boards.data")))) {
 
-      boardList = (ArrayList<Board>) in.readObject();
+      // 1) 게시글 개수
+      int size = in.readInt();
 
+      for (int i = 0; i < size; i++) {
+        // 게시글 데이터를 저장할 객체 준비
+        Board b = new Board();
+        b.setNo(in.readInt());
+        b.setTitle(in.readUTF());
+        b.setRegisteredDate(Date.valueOf(in.readUTF()));
+
+        boardList.add(b);
+      }
       System.out.println("게시글 데이터 로딩!");
 
     } catch (Exception e) {
@@ -179,12 +189,15 @@ public class App {
   }
 
   static void saveBoards() {
-    try (ObjectOutputStream out = new ObjectOutputStream(
-        new BufferedOutputStream(
-            new FileOutputStream("boards.data")))) {
+    try (DataOutputStream out = new DataOutputStream (new BufferedOutputStream(new FileOutputStream("boards.data")))) {
 
-      boardList = new ArrayList<>();
+      out.writeInt(boardList.size());
 
+      for (Board b : boardList) {
+        out.writeInt(b.getNo());        
+        out.writeUTF(b.getTitle());
+
+      }
       System.out.println("게시글 데이터 저장!");
 
     } catch (Exception e) {
@@ -194,21 +207,54 @@ public class App {
 
   static void loadMembers() {
 
-    try (DataInputStream in = new DataInputStream(
-        new BufferedInputStream (
-            new FileInputStream("members.data")))) {
-
-      int size = in.readInt();
+    try (FileInputStream in = new FileInputStream("members.data")) {
+      // 데이터의 개수를 먼저 읽는다. (2바이트)
+      int size = in.read() << 8 | in.read();
 
       for (int i = 0; i < size; i++) {
+        // 데이터를 담을 객체 준비
         Member member = new Member();
-        member.setNo(in.readInt());
-        member.setName(in.readUTF());
-        member.setEmail(in.readUTF());
-        member.setPassword(in.readUTF());
-        member.setPhoto(in.readUTF());
-        member.setTel(in.readUTF());
-        member.setRegisteredDate(Date.valueOf(in.readUTF()));
+
+        // 출력 형식에 맞춰서 파일에서 데이터를 읽는다.
+        // => 회원 번호 읽기
+        int value = in.read() << 24;
+        value += in.read() << 16;
+        value += in.read() << 8;
+        value += in.read();
+        member.setNo(value);
+
+        // 문자열을 읽을 바이트 배열을 준비한다.
+        byte[] bytes = new byte[30000];
+
+        // => 회원 이름 읽기
+        int len = in.read() << 8 | in.read();
+        in.read(bytes, 0, len);
+        member.setName(new String(bytes, 0, len, "UTF-8"));
+
+        // => 회원 이메일 읽기
+        len = in.read() << 8 | in.read();
+        in.read(bytes, 0, len);
+        member.setEmail(new String(bytes, 0, len, "UTF-8"));
+
+        // => 회원 암호 읽기
+        len = in.read() << 8 | in.read();
+        in.read(bytes, 0, len);
+        member.setPassword(new String(bytes, 0, len, "UTF-8"));
+
+        // => 회원 사진 읽기
+        len = in.read() << 8 | in.read();
+        in.read(bytes, 0, len);
+        member.setPhoto(new String(bytes, 0, len, "UTF-8"));
+
+        // => 회원 전화 읽기
+        len = in.read() << 8 | in.read();
+        in.read(bytes, 0, len);
+        member.setTel(new String(bytes, 0, len, "UTF-8"));
+
+        // => 회원 등록일 읽기
+        len = in.read() << 8 | in.read();
+        in.read(bytes, 0, 10);
+        member.setRegisteredDate(Date.valueOf(new String(bytes, 0, 10, "UTF-8")));
 
         memberList.add(member);
       }
@@ -221,18 +267,61 @@ public class App {
 
   static void saveMembers() {
 
-    try (DataOutputStream out = new DataOutputStream(new FileOutputStream("members.data"))) {
+    try (FileOutputStream out = new FileOutputStream("members.data")) {
 
-      out.writeInt(memberList.size());
+      // 데이터의 개수를 먼저 출력한다.(2바이트)
+      out.write(memberList.size() >> 8);
+      out.write(memberList.size());
 
       for (Member member : memberList) {
-        out.writeInt(member.getNo());
-        out.writeUTF(member.getName());
-        out.writeUTF(member.getEmail());
-        out.writeUTF(member.getPassword());
-        out.writeUTF(member.getPhoto());
-        out.writeUTF(member.getTel());
-        out.writeUTF(member.getRegisteredDate().toString());
+        // 회원 목록에서 회원 데이터를 꺼내 바이너리 형식으로 출력한다.
+        // => 회원 번호 출력 (4바이트)
+        out.write(member.getNo() >> 24);
+        out.write(member.getNo() >> 16);
+        out.write(member.getNo() >> 8);
+        out.write(member.getNo());
+
+        // => 회원 이름 
+        //    문자열의 바이트 길이(2바이트) + 문자열의 바이트 배열
+        byte[] bytes = member.getName().getBytes("UTF-8");
+        out.write(bytes.length >> 8);
+        out.write(bytes.length);
+        out.write(bytes);
+
+        // => 회원 이메일 
+        //    문자열의 바이트 길이(2바이트) + 문자열의 바이트 배열
+        bytes = member.getEmail().getBytes("UTF-8");
+        out.write(bytes.length >> 8);
+        out.write(bytes.length);
+        out.write(bytes);
+
+        // => 회원 암호 
+        //    문자열의 바이트 길이(2바이트) + 문자열의 바이트 배열
+        bytes = member.getPassword().getBytes("UTF-8");
+        out.write(bytes.length >> 8);
+        out.write(bytes.length);
+        out.write(bytes);
+
+        // => 회원 사진 
+        //    문자열의 바이트 길이(2바이트) + 문자열의 바이트 배열
+        bytes = member.getPhoto().getBytes("UTF-8");
+        out.write(bytes.length >> 8);
+        out.write(bytes.length);
+        out.write(bytes);
+
+        // => 회원 전화 
+        //    문자열의 바이트 길이(2바이트) + 문자열의 바이트 배열
+        bytes = member.getTel().getBytes("UTF-8");
+        out.write(bytes.length >> 8);
+        out.write(bytes.length);
+        out.write(bytes);
+
+        // => 회원 등록일
+        //      문자열의 바이트 길이(2바이트) + 문자열의 바이트 배열
+        bytes = member.getRegisteredDate().toString().getBytes("UTF-8");
+        out.write(bytes.length >> 8);
+        out.write(bytes.length);
+        out.write(bytes);
       }
       System.out.println("회원 데이터 저장!");
 
@@ -243,19 +332,55 @@ public class App {
 
   static void loadProjects() {
 
-    try (DataInputStream in = new DataInputStream(new FileInputStream("projects.data"))) {
+    try (FileInputStream in = new FileInputStream("projects.data")) {
 
-      int size = in.readInt();
+      // 데이터의 개수를 먼저 읽는다. (2바이트)
+      int size = in.read() << 8 | in.read();
 
       for (int i = 0; i < size; i++) {
+        // 데이터를 담을 객체 준비
         Project project = new Project();
-        project.setNo(in.readInt());
-        project.setTitle(in.readUTF());
-        project.setContent(in.readUTF());
-        project.setStartDate(Date.valueOf(in.readUTF()));
-        project.setEndDate(Date.valueOf(in.readUTF()));
-        project.setOwner(in.readUTF());
-        project.setMembers(in.readUTF());
+
+        // 출력 형식에 맞춰서 파일에서 데이터를 읽는다.
+        // => 프로젝트 번호 읽기
+        int value = in.read() << 24;
+        value += in.read() << 16;
+        value += in.read() << 8;
+        value += in.read();
+        project.setNo(value);
+
+        // 문자열을 읽을 바이트 배열을 준비한다.
+        byte[] bytes = new byte[30000];
+
+        // => 프로젝트 제목 읽기
+        int len = in.read() << 8 | in.read();
+        in.read(bytes, 0, len);
+        project.setTitle(new String(bytes, 0, len, "UTF-8"));
+
+        // => 프로젝트 내용 읽기
+        len = in.read() << 8 | in.read();
+        in.read(bytes, 0, len);
+        project.setContent(new String(bytes, 0, len, "UTF-8"));
+
+        // => 프로젝트 시작일 읽기
+        len = in.read() << 8 | in.read();
+        in.read(bytes, 0, len);
+        project.setStartDate(Date.valueOf(new String(bytes, 0, 10, "UTF-8")));
+
+        // => 프로젝트 종료일 읽기
+        len = in.read() << 8 | in.read();
+        in.read(bytes, 0, len);
+        project.setEndDate(Date.valueOf(new String(bytes, 0, 10, "UTF-8")));
+
+        // => 프로젝트 소유주 읽기
+        len = in.read() << 8 | in.read();
+        in.read(bytes, 0, len);
+        project.setOwner(new String(bytes, 0, len, "UTF-8"));
+
+        // => 프로젝트 멤버들 읽기
+        len = in.read() << 8 | in.read();
+        in.read(bytes, 0, len);
+        project.setMembers(new String(bytes, 0, len, "UTF-8"));
 
         projectList.add(project);
       }
@@ -268,18 +393,61 @@ public class App {
 
   static void saveProjects() {
 
-    try (DataOutputStream out = new DataOutputStream(new FileOutputStream("projects.data"))) {
+    try (FileOutputStream out = new FileOutputStream("projects.data")) {
 
-      out.writeInt(projectList.size());
+      // 데이터의 개수를 먼저 출력한다.(2바이트)
+      out.write(projectList.size() >> 8);
+      out.write(projectList.size());
 
       for (Project project : projectList) {
-        out.writeInt(project.getNo());
-        out.writeUTF(project.getTitle());
-        out.writeUTF(project.getContent());
-        out.writeUTF(project.getStartDate().toString());
-        out.writeUTF(project.getEndDate().toString());
-        out.writeUTF(project.getOwner());
-        out.writeUTF(project.getMembers());
+        // 프로젝트 목록에서 프로젝트 데이터를 꺼내 바이너리 형식으로 출력한다.
+        // => 프로젝트 번호 출력 (4바이트)
+        out.write(project.getNo() >> 24);
+        out.write(project.getNo() >> 16);
+        out.write(project.getNo() >> 8);
+        out.write(project.getNo());
+
+        // => 프로젝트 제목 
+        //    문자열의 바이트 길이(2바이트) + 문자열의 바이트 배열
+        byte[] bytes = project.getTitle().getBytes("UTF-8");
+        out.write(bytes.length >> 8);
+        out.write(bytes.length);
+        out.write(bytes);
+
+        // => 프로젝트 내용
+        //    문자열의 바이트 길이(2바이트) + 문자열의 바이트 배열
+        bytes = project.getContent().getBytes("UTF-8");
+        out.write(bytes.length >> 8);
+        out.write(bytes.length);
+        out.write(bytes);
+
+        // => 프로젝트 시작일
+        //    문자열의 바이트 길이(2바이트) + 문자열의 바이트 배열
+        bytes = project.getStartDate().toString().getBytes("UTF-8");
+        out.write(bytes.length >> 8);
+        out.write(bytes.length);
+        out.write(bytes);
+
+        // => 프로젝트 종료일 
+        //    문자열의 바이트 길이(2바이트) + 문자열의 바이트 배열
+        bytes = project.getEndDate().toString().getBytes("UTF-8");
+        out.write(bytes.length >> 8);
+        out.write(bytes.length);
+        out.write(bytes);
+
+        // => 프로젝트 소유주
+        //    문자열의 바이트 길이(2바이트) + 문자열의 바이트 배열
+        bytes = project.getOwner().getBytes("UTF-8");
+        out.write(bytes.length >> 8);
+        out.write(bytes.length);
+        out.write(bytes);
+
+        // => 프로젝트 멤버들
+        //    문자열의 바이트 길이(2바이트) + 문자열의 바이트 배열
+        bytes = project.getMembers().getBytes("UTF-8");
+        out.write(bytes.length >> 8);
+        out.write(bytes.length);
+        out.write(bytes);
       }
       System.out.println("프로젝트 데이터 저장!");
 
@@ -290,17 +458,47 @@ public class App {
 
   static void loadTasks() {
 
-    try (DataInputStream in = new DataInputStream(new FileInputStream("tasks.data"))) {
+    try (FileInputStream in = new FileInputStream("tasks.data")) {
 
-      int size = in.readInt();
+      // 데이터의 개수를 먼저 읽는다. (2바이트)
+      int size = in.read() << 8 | in.read();
 
       for (int i = 0; i < size; i++) {
+        // 데이터를 담을 객체 준비
         Task task = new Task();
-        task.setNo(in.readInt());
-        task.setContent(in.readUTF());
-        task.setDeadline(Date.valueOf(in.readUTF()));
-        task.setStatus(in.readInt());
-        task.setOwner(in.readUTF());
+
+        // 출력 형식에 맞춰서 파일에서 데이터를 읽는다.
+        // => 작업 번호 읽기
+        int value = in.read() << 24;
+        value += in.read() << 16;
+        value += in.read() << 8;
+        value += in.read();
+        task.setNo(value);
+
+        // 문자열을 읽을 바이트 배열을 준비한다.
+        byte[] bytes = new byte[30000];
+
+        // => 작업 내용 읽기
+        int len = in.read() << 8 | in.read();
+        in.read(bytes, 0, len);
+        task.setContent(new String(bytes, 0, len, "UTF-8"));
+
+        // => 작업 종료일 읽기
+        len = in.read() << 8 | in.read();
+        in.read(bytes, 0, len);
+        task.setDeadline(Date.valueOf(new String(bytes, 0, 10, "UTF-8")));
+
+        // => 작업 상태 읽기
+        value = in.read() << 24;
+        value += in.read() << 16;
+        value += in.read() << 8;
+        value += in.read();
+        task.setStatus(value);
+
+        // => 작업 소유주 읽기
+        len = in.read() << 8 | in.read();
+        in.read(bytes, 0, len);
+        task.setOwner(new String(bytes, 0, len, "UTF-8"));
 
         taskList.add(task);
       }
@@ -313,16 +511,45 @@ public class App {
 
   static void saveTasks() {
 
-    try (DataOutputStream out = new DataOutputStream(new FileOutputStream("tasks.data"))) {
+    try (FileOutputStream out = new FileOutputStream("tasks.data")) {
 
-      out.writeInt(taskList.size());
+      // 데이터의 개수를 먼저 출력한다.(2바이트)
+      out.write(taskList.size() >> 8);
+      out.write(taskList.size());
 
       for (Task task : taskList) {
-        out.writeInt(task.getNo());
-        out.writeUTF(task.getContent());
-        out.writeUTF(task.getDeadline().toString());
-        out.writeInt(task.getStatus());
-        out.writeUTF(task.getOwner());
+        // 작업 목록에서 작업 데이터를 꺼내 바이너리 형식으로 출력한다.
+        // => 작업 번호 출력 (4바이트)
+        out.write(task.getNo() >> 24);
+        out.write(task.getNo() >> 16);
+        out.write(task.getNo() >> 8);
+        out.write(task.getNo());
+
+        // => 작업 내용 
+        //    문자열의 바이트 길이(2바이트) + 문자열의 바이트 배열
+        byte[] bytes = task.getContent().getBytes("UTF-8");
+        out.write(bytes.length >> 8);
+        out.write(bytes.length);
+        out.write(bytes);
+
+        // => 작업 종료일(10바이트)
+        bytes = task.getDeadline().toString().getBytes("UTF-8");
+        out.write(bytes.length >> 8);
+        out.write(bytes.length);
+        out.write(bytes);
+
+        // => 작업 상태 출력 (4바이트)
+        out.write(task.getStatus() >> 24);
+        out.write(task.getStatus() >> 16);
+        out.write(task.getStatus() >> 8);
+        out.write(task.getStatus());
+
+        // => 작업 소유주
+        //    문자열의 바이트 길이(2바이트) + 문자열의 바이트 배열
+        bytes = task.getOwner().getBytes("UTF-8");
+        out.write(bytes.length >> 8);
+        out.write(bytes.length);
+        out.write(bytes);
       }
       System.out.println("작업 데이터 저장!");
 

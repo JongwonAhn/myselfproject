@@ -1,9 +1,8 @@
 package com.eomcs.pms.domain;
 
-import java.io.Serializable;
 import java.sql.Date;
 
-public class Board implements Serializable {
+public class Board implements java.io.Serializable {
   /**
    * 
    */
