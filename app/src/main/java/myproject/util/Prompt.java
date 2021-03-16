@@ -7,21 +7,21 @@ public class Prompt {
   static Scanner keyScan = new Scanner(System.in);
 
 
-  public  String inputString(String title) {
+  public static String inputString(String title) {
     System.out.println(title);
     return keyScan.nextLine();  
   }
 
-  public  int inputInt(String title) {
+  public static int inputInt(String title) {
     return Integer.parseInt(inputString(title));
 
   }
 
-  public  Date inputDate(String title) {
+  public static Date inputDate(String title) {
     return Date.valueOf(inputString(title));
   }
 
-  public void close() {
+  public static void close() {
     keyScan.close();
   }
 

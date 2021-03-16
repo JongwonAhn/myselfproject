@@ -1,19 +1,16 @@
 package myproject.pms.handler;
 
-import java.util.ArrayList;
-
 import myproject.pms.domain.Notice;
 import myproject.util.Prompt;
 
 public class NoticeHandler {
 
-  public Prompt prompt = new Prompt();
 
   public final int SIZE = 100;
   public Notice[] notice = new Notice[SIZE];
   public int size = 0;
 
-  ArrayList<Notice> noticeHandler = new ArrayList<>();
+  //  ArrayList<Notice> noticeHandler = new ArrayList<>();
 
 
   public void addNotice() {
@@ -21,9 +18,9 @@ public class NoticeHandler {
     System.out.println("메인 / 공지하기 -----------------------\n");
 
     Notice notice = new Notice();
-    notice.setNo(prompt.inputInt("공지 번호 입력"));
-    notice.setTitle(prompt.inputString("공지 제목 입력"));
-    notice.setContents(prompt.inputString("공지 내용 입력"));
+    notice.setNo(Prompt.inputInt("공지 번호 입력"));
+    notice.setTitle(Prompt.inputString("공지 제목 입력"));
+    notice.setContents(Prompt.inputString("공지 내용 입력"));
     notice.setRegisteredDate(new java.sql.Date(System.currentTimeMillis()));
 
 
@@ -45,10 +42,6 @@ public class NoticeHandler {
           notice[i].getRegisteredDate());
 
 
-      //      endTime[i] = System.currentTimeMillis();
-      //      int totalTime = (int)((endTime[i] - startTime[i] ) / 1000.0);
-      //      int check;
-      //      check = 10000 * totalTime;
     }
 
   }

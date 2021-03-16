@@ -12,7 +12,7 @@ public class ThreadEx01 {
 
 
 
-  public static void main(String[] args) {
+  public static void main(String[] args) throws Exception {
 
     Scanner keyboard = new Scanner(System.in);
 
@@ -20,22 +20,23 @@ public class ThreadEx01 {
 
     myThread.start();
 
-    while(true) {
+    loop:
+      while(true) {
 
-      System.out.println("변경할 숫자 입력");
-      int input = keyboard.nextInt();
+        System.out.println("변경할 숫자 입력");
+        int input = keyboard.nextInt();
 
-      if(input != 999) {
+        if(input != 999) {
 
-        myThread.setNum(input);
-      }else {
-        break;
+          myThread.setNum(input);
+        }else {
+          break loop;
+        }
+
+
       }
-
-
-    }
-
     keyboard.close();
+
   }
 
   static class MyThread extends Thread{

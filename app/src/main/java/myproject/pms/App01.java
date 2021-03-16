@@ -9,7 +9,6 @@ public class App01 {
 
   public static void main(String[] args) {
 
-    Prompt pt=new Prompt();
     AccountHandler accountHandler = new AccountHandler();
     NoticeHandler noticeHandler = new NoticeHandler();
     BoardHandler boardHander = new BoardHandler();
@@ -25,7 +24,7 @@ public class App01 {
 
       try {
 
-        int inputMenu1 = pt.inputInt("입력>");
+        int inputMenu1 = Prompt.inputInt("입력>");
 
         if (inputMenu1 == 1) {
 
@@ -39,10 +38,10 @@ public class App01 {
           } else {
 
             System.out.println("메인 / 로그인---------------------------------");
-            String inputId = pt.inputString("아이디: ");
+            String inputId = Prompt.inputString("아이디: ");
 
             if (accountHandler.chkAcccountId(inputId)) {
-              String inputPassword = pt.inputString("비밀번호: ");
+              String inputPassword = Prompt.inputString("비밀번호: ");
 
               if (accountHandler.chkAcccountPW(inputPassword)) {
                 System.out.println("로그인 되었습니다!\n");
@@ -52,14 +51,14 @@ public class App01 {
                   try {
 
                     System.out.println("메인 / 메뉴선택-----------------------------");
-                    if(accountHandler.myaccount.getAdmin()==0) {
+                    if(accountHandler.a.getAdmin()==0) {
                       System.out.println("1. 내 계정관리\n2. 게시판 가기\n3. 아파트 공지 보기\n4. 뒤로가기");
                     }
                     else {
                       System.out.println("1. 내 계정관리\n2. 게시판 가기\n3. 아파트 공지 보기\n4. 뒤로가기\n5. 공지하기");                  
                     }
 
-                    int inputMenu2 = pt.inputInt("입력>");
+                    int inputMenu2 = Prompt.inputInt("입력>");
 
                     if (inputMenu2 == 1) { // 계정관리 내 메뉴
 
@@ -76,7 +75,7 @@ public class App01 {
                     } else if (inputMenu2 == 4) { // 뒤로가기
                       break;
 
-                    } else if (inputMenu2 == 5 && accountHandler.myaccount.getAdmin() == 1 ) { 
+                    } else if (inputMenu2 == 5 && accountHandler.a.getAdmin() == 1 ) { 
                       //공지 하기(관리자만 실행가능
 
                       noticeHandler.addNotice();
@@ -107,13 +106,12 @@ public class App01 {
         }
 
       } catch(Exception e) {
-        //        System.out.printf("명령어 실행중 오류 발생:%s - %s\n",
-        //            e.getClass().getName(),e.getMessage());
+        e.printStackTrace();
         System.out.println("다시 입력해주세요\n");
       }
 
     }
 
-    pt.close();
+    Prompt.close();
   }
 }
