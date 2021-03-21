@@ -17,7 +17,7 @@ public class App01 {
 
     System.out.println("[입주민 커뮤니티 프로그램]\n");
 
-    while (true) {     
+    while (true) {      
       select = true; 
       System.out.println("메인 / -----------------------------------------");
       System.out.println("1. 회원가입\n2. 로그인\n3. 종료하기");
