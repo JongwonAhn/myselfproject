@@ -1,4 +1,4 @@
-package myselfStudy;
+package myselfStudy.study01;
 
 import java.sql.Date;
 import java.util.Scanner;

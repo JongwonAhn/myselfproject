@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="BoardMapper">
+
+  <select id="selectBoard" resultType="Board">
+  select
+    board_id as no,
+    title,
+    contents as content,
+    created_date as registeredDate,
+    view_count as viewCount
+    from x_board
+  </select>
+</mapper>

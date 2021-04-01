@@ -1,4 +1,4 @@
-package myselfStudy;
+package myselfStudy.study01;
 
 public class Random01 {
 

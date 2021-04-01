@@ -1,4 +1,4 @@
-package myselfStudy;
+package myselfStudy.study01;
 
 public class study4 {
   public static void main(String[] args) {
